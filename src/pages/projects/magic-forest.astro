@@ -29,7 +29,10 @@ const images = listImages(displayDir).map(filename => ({
   <div class="series-layout">
     <div class="images">
       {images.map(img => (
-        <img src={img.src} alt={img.id} loading="lazy" />
+        <figure>
+          <img src={img.src} alt={img.id} loading="lazy" />
+          <figcaption>{img.id}</figcaption>
+        </figure>
       ))}
       {images.length === 0 && <p class="empty">No images yet.</p>}
     </div>
@@ -70,10 +73,24 @@ const images = listImages(displayDir).map(filename => ({
     gap: 2.5rem;
   }
 
+  figure {
+    margin: 0;
+  }
+
   .images img {
     width: 100%;
     height: auto;
     display: block;
+  }
+
+  figcaption {
+    text-align: center;
+    font-size: 0.9rem;
+    font-weight: 400;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #111;
+    padding-top: 0.5rem;
   }
 
   .empty {
@@ -82,8 +99,6 @@ const images = listImages(displayDir).map(filename => ({
   }
 
   .sidebar {
-    position: sticky;
-    top: 7rem;
     display: flex;
     flex-direction: column;
     gap: 0.4rem;

@@ -10,12 +10,19 @@ const isAbout = pathname === '/about';
     <span class="site-name">EMERGENCE</span>
     <span class="site-sub">by Dorit Geifman</span>
   </a>
-  <ul>
+  <button class="hamburger" id="nav-toggle" aria-label="Menu">&#9776;</button>
+  <ul id="nav-links">
     <li><a href="/" class={isArt ? 'active' : ''}>SERIES</a></li>
     <li><a href="/blog" class={isBlog ? 'active' : ''}>BLOG</a></li>
     <li><a href="/about" class={isAbout ? 'active' : ''}>ABOUT</a></li>
   </ul>
 </nav>
+
+<script>
+  const toggle = document.getElementById('nav-toggle');
+  const links = document.getElementById('nav-links');
+  toggle?.addEventListener('click', () => links?.classList.toggle('open'));
+</script>
 
 <style>
   nav {
@@ -54,6 +61,17 @@ const isAbout = pathname === '/about';
     color: #666;
   }
 
+  .hamburger {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 1.6rem;
+    cursor: pointer;
+    color: #111;
+    padding: 0;
+    line-height: 1;
+  }
+
   ul {
     list-style: none;
     display: flex;
@@ -63,7 +81,7 @@ const isAbout = pathname === '/about';
 
   ul a {
     text-decoration: none;
-    font-size: 1.1rem;
+    font-size: 0.9rem;
     font-weight: 400;
     letter-spacing: 0.1em;
     color: #aaa;
@@ -76,5 +94,34 @@ const isAbout = pathname === '/about';
 
   ul a.active {
     color: #444;
+  }
+
+  @media (max-width: 600px) {
+    .hamburger {
+      display: block;
+    }
+
+    ul {
+      display: none;
+      position: absolute;
+      top: 100%;
+      right: 0;
+      left: 0;
+      background: white;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0;
+      border-bottom: 1px solid #e8e8e8;
+      padding: 0.5rem 2.5rem 1rem;
+    }
+
+    ul.open {
+      display: flex;
+    }
+
+    ul li {
+      width: 100%;
+      padding: 0.5rem 0;
+    }
   }
 </style>
