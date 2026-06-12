@@ -23,10 +23,19 @@ const { title, slug, coverImage } = Astro.props;
     display: block;
     text-decoration: none;
     color: #111;
+    -webkit-touch-callout: none;
+    user-select: none;
   }
 
   .card:hover .thumb img {
     opacity: 0.85;
+  }
+
+  @media (hover: none) {
+    .card:active {
+      transform: scale(0.97);
+      transition: transform 0.1s ease;
+    }
   }
 
   .thumb {
