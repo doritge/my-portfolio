@@ -1,0 +1,171 @@
+---
+interface Image {
+  id: string;
+  display: string;
+  print?: string;
+}
+
+interface Props {
+  images: Image[];
+}
+
+const { images } = Astro.props;
+---
+
+<div id="lightbox" class="lightbox" aria-hidden="true" role="dialog" aria-modal="true">
+  <div class="overlay" id="lb-overlay"></div>
+  <div class="panel">
+    <button class="close" id="lb-close" aria-label="Close">&#215;</button>
+    <button class="arrow prev" id="lb-prev" aria-label="Previous">&#8249;</button>
+    <div class="image-wrap">
+      <img id="lb-img" src="" alt="" />
+    </div>
+    <button class="arrow next" id="lb-next" aria-label="Next">&#8250;</button>
+    <div class="info">
+      <span id="lb-title"></span>
+      <a id="lb-download" href="" download class="download">Download print</a>
+    </div>
+  </div>
+</div>
+
+<script define:vars={{ images }}>
+  const lightbox = document.getElementById('lightbox');
+  const img = document.getElementById('lb-img');
+  const titleEl = document.getElementById('lb-title');
+  const downloadEl = document.getElementById('lb-download');
+  const overlay = document.getElementById('lb-overlay');
+  let current = 0;
+
+  function show(index) {
+    current = ((index % images.length) + images.length) % images.length;
+    const item = images[current];
+    img.src = item.display;
+    img.alt = item.id;
+    titleEl.textContent = item.id;
+    if (item.print) {
+      downloadEl.href = item.print;
+      downloadEl.style.display = '';
+    } else {
+      downloadEl.style.display = 'none';
+    }
+    lightbox.setAttribute('aria-hidden', 'false');
+    lightbox.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function close() {
+    lightbox.setAttribute('aria-hidden', 'true');
+    lightbox.classList.remove('open');
+    document.body.style.overflow = '';
+    img.src = '';
+  }
+
+  document.getElementById('lb-close').addEventListener('click', close);
+  overlay.addEventListener('click', close);
+  document.getElementById('lb-prev').addEventListener('click', () => show(current - 1));
+  document.getElementById('lb-next').addEventListener('click', () => show(current + 1));
+
+  document.addEventListener('keydown', (e) => {
+    if (!lightbox.classList.contains('open')) return;
+    if (e.key === 'Escape') close();
+    if (e.key === 'ArrowLeft') show(current - 1);
+    if (e.key === 'ArrowRight') show(current + 1);
+  });
+
+  // Thumbnails dispatch this event with { index }
+  document.addEventListener('open-lightbox', (e) => {
+    show(e.detail.index);
+  });
+</script>
+
+<style>
+  .lightbox {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .lightbox.open {
+    display: flex;
+  }
+
+  .overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.94);
+  }
+
+  .panel {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    max-width: 92vw;
+    max-height: 90vh;
+  }
+
+  .image-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 80vw;
+    max-height: 85vh;
+  }
+
+  .image-wrap img {
+    max-width: 100%;
+    max-height: 85vh;
+    object-fit: contain;
+  }
+
+  .close {
+    position: absolute;
+    top: -2.25rem;
+    right: 0;
+    background: none;
+    border: none;
+    font-size: 1.75rem;
+    line-height: 1;
+    cursor: pointer;
+    color: #555;
+    padding: 0;
+  }
+
+  .close:hover { color: #111; }
+
+  .arrow {
+    background: none;
+    border: none;
+    font-size: 3rem;
+    line-height: 1;
+    cursor: pointer;
+    color: #bbb;
+    padding: 0.25rem 0.5rem;
+    flex-shrink: 0;
+    user-select: none;
+  }
+
+  .arrow:hover { color: #111; }
+
+  .info {
+    position: absolute;
+    bottom: -2.25rem;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    color: #888;
+  }
+
+  .download {
+    text-decoration: none;
+    color: #888;
+  }
+
+  .download:hover { color: #111; }
+</style>

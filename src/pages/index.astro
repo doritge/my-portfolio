@@ -1,17 +1,95 @@
 ---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import GalleryCard from '../components/GalleryCard.astro';
+import fs from 'node:fs';
+import path from 'node:path';
 
+const series = await getCollection('projects');
+series.sort((a, b) => b.data.year - a.data.year);
+
+function getCoverImage(id: string, cover?: string): string {
+  const thumbDir = path.join(process.cwd(), 'public', 'images', id, 'thumb');
+  if (cover) {
+    for (const ext of ['.png', '.jpg', '.jpeg', '.webp']) {
+      if (fs.existsSync(path.join(thumbDir, `${cover}${ext}`))) {
+        return `/images/${id}/thumb/${cover}${ext}`;
+      }
+    }
+  }
+  // Fallback: first image found in thumb folder
+  try {
+    const files = fs
+      .readdirSync(thumbDir)
+      .filter((f) => /\.(jpg|jpeg|png|webp)$/i.test(f))
+      .sort();
+    if (files.length > 0) return `/images/${id}/thumb/${files[0]}`;
+  } catch {
+    // folder doesn't exist yet
+  }
+  return '/favicon.svg';
+}
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout title="emergence">
+  <div class="intro">
+    <p class="tagline">What does it mean to see mathematics?</p>
+    <p>Through visual representation, my work explores the structure, order, and beauty hidden in the abstract language of mathematics. Functions, formulas, and rules are translated into form — allowing patterns to emerge, evolve, and self-organize.</p>
+  </div>
+  <div class="grid">
+    {series.map((s) => (
+      <GalleryCard
+        title={s.data.title}
+        year={s.data.year}
+        slug={s.id}
+        coverImage={getCoverImage(s.id, s.data.cover)}
+      />
+    ))}
+    {series.length === 0 && (
+      <p class="empty">No series yet.</p>
+    )}
+  </div>
+</BaseLayout>
+
+<style>
+  .intro {
+    max-width: 680px;
+    margin: 3rem auto 2rem;
+    padding: 0 2rem;
+  }
+
+  .tagline {
+    font-style: italic;
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+    color: #111;
+  }
+
+  .intro p {
+    font-size: 1.15rem;
+    line-height: 1.9;
+    color: #444;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem 1.5rem;
+    padding: 2.5rem 2rem 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  @media (min-width: 768px) {
+    .grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2.5rem 2rem;
+      padding: 3rem 2rem 2rem;
+    }
+  }
+
+  .empty {
+    color: #999;
+    font-size: 0.9rem;
+  }
+</style>

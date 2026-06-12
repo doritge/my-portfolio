@@ -1,0 +1,116 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import fs from 'node:fs';
+import path from 'node:path';
+
+const series = (await getCollection('projects')).find(s => s.id === 'magic-forest');
+const { title, year, tagline, description } = series!.data;
+
+const displayDir = path.join(process.cwd(), 'public', 'images', 'magic-forest', 'display');
+
+function listImages(dir: string): string[] {
+  try {
+    return fs.readdirSync(dir)
+      .filter(f => /\.(jpg|jpeg|png|webp)$/i.test(f))
+      .sort();
+  } catch {
+    return [];
+  }
+}
+
+const images = listImages(displayDir).map(filename => ({
+  id: filename.replace(/\.[^.]+$/, ''),
+  src: `/images/magic-forest/display/${filename}`,
+}));
+---
+
+<BaseLayout title={`${title} — emergence`}>
+  <div class="series-layout">
+    <div class="images">
+      {images.map(img => (
+        <img src={img.src} alt={img.id} loading="lazy" />
+      ))}
+      {images.length === 0 && <p class="empty">No images yet.</p>}
+    </div>
+
+    <aside class="sidebar">
+      <h1>{title}</h1>
+      <span class="year">{year}</span>
+      {tagline && <p class="description tagline">{tagline}</p>}
+      <p class="description">{description}</p>
+    </aside>
+  </div>
+</BaseLayout>
+
+<style>
+  .series-layout {
+    display: grid;
+    grid-template-columns: 1fr 14rem;
+    gap: 3rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 3rem 2.5rem 6rem;
+    align-items: start;
+  }
+
+  @media (max-width: 768px) {
+    .series-layout {
+      grid-template-columns: 1fr;
+      padding: 2rem 1.5rem 4rem;
+    }
+    .sidebar {
+      order: -1;
+    }
+  }
+
+  .images {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+  }
+
+  .images img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .empty {
+    color: #999;
+    font-size: 0.9rem;
+  }
+
+  .sidebar {
+    position: sticky;
+    top: 7rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  h1 {
+    font-size: 1.1rem;
+    font-weight: 400;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #111;
+  }
+
+  .year {
+    font-size: 1rem;
+    color: #999;
+    letter-spacing: 0.05em;
+  }
+
+  .description {
+    margin-top: 1rem;
+    font-size: 1.05rem;
+    line-height: 1.75;
+    color: #666;
+  }
+
+  .tagline {
+    font-style: italic;
+  }
+</style>
