@@ -15,6 +15,7 @@ const { title, slug, coverImage } = Astro.props;
   </div>
   <div class="meta">
     <span class="title">{title}</span>
+    <span class="label">Images</span>
   </div>
 </a>
 
@@ -49,6 +50,9 @@ const { title, slug, coverImage } = Astro.props;
   .meta {
     padding: 0.75rem 0 0;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
   }
 
   .title {
@@ -58,5 +62,14 @@ const { title, slug, coverImage } = Astro.props;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: #111;
+  }
+
+  .label {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 400;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #999;
   }
 </style>

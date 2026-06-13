@@ -4,28 +4,40 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
 <BaseLayout title="About — emergence">
   <div class="about">
-    <h1>About</h1>
-    <p>Placeholder — add your bio here.</p>
+    <p>I began my professional journey with undergraduate studies in <strong>Mathematics and the History and Philosophy of Science</strong>. During the four decades of my career, I spent most of my time immersed in the world of technology. I worked for a company that was among the pioneers in <strong>digital image processing for the printing industry</strong>, and later for a company developing <strong>business systems for major telecommunications corporations</strong>. I completed this chapter in academia, where I earned a PhD exploring the <strong>social and broader implications of information</strong>.</p>
+
+    <p>Today, I have come full circle. I am engaged in <strong>algorithmic art</strong>, combining the programming skills I have acquired over the years with my lifelong passion for mathematics, art, and philosophy.</p>
+
+    <p>And thanks to Claude Code, who serves both as an intellectual partner in dialogue and as someone who takes away the routine, tedious aspects of programming, allowing me to focus on the theoretical and conceptual dimensions of the work.</p>
+
+    <p class="signature">Dorit Geifman<br />2026</p>
   </div>
 </BaseLayout>
 
 <style>
   .about {
     max-width: 640px;
-    margin: 4rem auto 2rem;
+    margin: 4rem auto 4rem;
     padding: 0 2rem;
-  }
-
-  h1 {
-    font-size: 1.4rem;
-    font-weight: 500;
-    margin-bottom: 1.5rem;
-    letter-spacing: 0.01em;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
   }
 
   p {
     font-size: 1rem;
-    line-height: 1.75;
+    line-height: 1.85;
     color: #444;
+  }
+
+  strong {
+    color: #111;
+    font-weight: 600;
+  }
+
+  .signature {
+    margin-top: 1rem;
+    font-style: italic;
+    color: #666;
   }
 </style>
