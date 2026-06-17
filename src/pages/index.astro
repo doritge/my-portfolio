@@ -36,6 +36,7 @@ function getCoverImage(id: string, cover?: string): string {
     <p class="tagline">What does it mean to see mathematics?</p>
     <p>Through visual representation, my work explores the structure, order, and beauty hidden in the abstract language of mathematics. Functions, formulas, and rules are translated into form — allowing patterns to emerge, evolve, and self-organize.</p>
   </div>
+  <p class="view-hint">View series:</p>
   <div class="grid">
     {series.map((s) => (
       <GalleryCard
@@ -85,6 +86,20 @@ function getCoverImage(id: string, cover?: string): string {
       grid-template-columns: repeat(3, 1fr);
       gap: 2.5rem 2rem;
       padding: 3rem 2rem 2rem;
+    }
+  }
+
+  .view-hint {
+    display: none;
+  }
+
+  @media (max-width: 767px) {
+    .view-hint {
+      display: block;
+      text-align: center;
+      font-size: 1.2rem;
+      color: #444;
+      padding: 0 2rem 1rem;
     }
   }
 
