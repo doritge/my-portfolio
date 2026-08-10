@@ -157,8 +157,14 @@ Each series page (`src/pages/projects/[series-slug].astro`) shows:
 ## Workflow: Adding a New Series
 
 1. R creates the new folder structure and writes the first images
-2. Claude Code creates `src/pages/projects/[series-slug].astro`
-3. Claude Code adds the series card to `src/pages/index.astro`
+2. Claude Code creates `src/pages/projects/[series-slug].astro` with this exact content:
+   ```astro
+   ---
+   import SeriesLayout from '../../components/SeriesLayout.astro';
+   ---
+   <SeriesLayout slug="[series-slug]" />
+   ```
+3. The home page picks up the new series automatically — no changes to `index.astro` needed
 4. Write a short description in `src/content/projects/[series-slug].md`, and set the `cover` frontmatter field to the image ID to display on the series card (e.g. `cover: "001"`). If omitted, the first image in the `thumb/` folder is used as fallback.
 5. `git push`
 
