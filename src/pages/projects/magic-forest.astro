@@ -1,13 +1,15 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import Lightbox from '../../components/Lightbox.astro';
 import fs from 'node:fs';
 import path from 'node:path';
 
 const series = (await getCollection('projects')).find(s => s.id === 'magic-forest');
 const { title, year, tagline, description } = series!.data;
 
-const displayDir = path.join(process.cwd(), 'public', 'images', 'magic-forest', 'display');
+const thumbDir = path.join(process.cwd(), 'public', 'images', 'magic-forest', 'thumb');
+const printDir = path.join(process.cwd(), 'public', 'images', 'magic-forest', 'print');
 
 function listImages(dir: string): string[] {
   try {
@@ -19,20 +21,35 @@ function listImages(dir: string): string[] {
   }
 }
 
-const images = listImages(displayDir).map(filename => ({
-  id: filename.replace(/\.[^.]+$/, ''),
-  src: `/images/magic-forest/display/${filename}`,
-}));
+function findFile(dir: string, id: string): string | undefined {
+  for (const ext of ['.png', '.jpg', '.jpeg', '.webp']) {
+    if (fs.existsSync(path.join(dir, `${id}${ext}`))) return `${id}${ext}`;
+  }
+}
+
+const images = listImages(thumbDir).map(filename => {
+  const id = filename.replace(/\.[^.]+$/, '');
+  const printFile = findFile(printDir, id);
+  return {
+    id,
+    thumb:   `/images/magic-forest/thumb/${filename}`,
+    display: `/images/magic-forest/display/${filename}`,
+    print:   printFile ? `/images/magic-forest/print/${printFile}` : undefined,
+  };
+});
 ---
 
 <BaseLayout title={`${title} — emergence`}>
   <div class="series-layout">
-    <div class="images">
-      {images.map(img => (
-        <figure>
-          <img src={img.src} alt={img.id} loading="lazy" />
-          <figcaption>{img.id}</figcaption>
-        </figure>
+    <div class="gallery">
+      {images.map((img, i) => (
+        <button
+          class="thumb-btn"
+          data-index={i}
+          aria-label={`View ${img.id}`}
+        >
+          <img src={img.thumb} alt={img.id} loading="lazy" />
+        </button>
       ))}
       {images.length === 0 && <p class="empty">No images yet.</p>}
     </div>
@@ -44,7 +61,18 @@ const images = listImages(displayDir).map(filename => ({
       <p class="description">{description}</p>
     </aside>
   </div>
+
+  <Lightbox images={images.map(img => ({ id: img.id, display: img.display, print: img.print }))} />
 </BaseLayout>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('.thumb-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const index = Number(btn.dataset.index);
+      document.dispatchEvent(new CustomEvent('open-lightbox', { detail: { index } }));
+    });
+  });
+</script>
 
 <style>
   .series-layout {
@@ -67,30 +95,36 @@ const images = listImages(displayDir).map(filename => ({
     }
   }
 
-  .images {
-    display: flex;
-    flex-direction: column;
-    gap: 2.5rem;
+  .gallery {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
   }
 
-  figure {
-    margin: 0;
+  @media (max-width: 768px) {
+    .gallery {
+      grid-template-columns: repeat(2, 1fr);
+    }
   }
 
-  .images img {
+  .thumb-btn {
+    display: block;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    width: 100%;
+  }
+
+  .thumb-btn img {
     width: 100%;
     height: auto;
     display: block;
+    transition: opacity 0.15s;
   }
 
-  figcaption {
-    text-align: center;
-    font-size: 0.9rem;
-    font-weight: 400;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: #111;
-    padding-top: 0.5rem;
+  .thumb-btn:hover img {
+    opacity: 0.85;
   }
 
   .empty {
