@@ -7,6 +7,10 @@ import path from 'node:path';
 const posts = await getCollection('blog');
 posts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 
+function formatDate(date: Date): string {
+  return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long' });
+}
+
 function getThumbnail(slug: string, thumbnail?: string): string | null {
   const thumbDir = path.join(process.cwd(), 'public', 'images', 'blog', 'thumb');
   const id = thumbnail ?? slug;
@@ -33,6 +37,7 @@ function getThumbnail(slug: string, thumbnail?: string): string | null {
               </div>
               <div class="text">
                 <h2 class="title">{post.data.title}</h2>
+                <p class="date">{formatDate(post.data.date)}</p>
                 {post.data.subtitle && <p class="subtitle">{post.data.subtitle}</p>}
                 <p class="description">{post.data.description}</p>
               </div>
@@ -108,6 +113,13 @@ function getThumbnail(slug: string, thumbnail?: string): string | null {
     font-weight: 500;
     color: #111;
     margin-bottom: 0.3rem;
+  }
+
+  .date {
+    font-size: 0.8rem;
+    letter-spacing: 0.05em;
+    color: #999;
+    margin-bottom: 0.5rem;
   }
 
   .subtitle {
