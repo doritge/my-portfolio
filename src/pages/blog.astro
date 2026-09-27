@@ -37,8 +37,8 @@ function getThumbnail(slug: string, thumbnail?: string): string | null {
               </div>
               <div class="text">
                 <h2 class="title">{post.data.title}</h2>
-                <p class="date">{formatDate(post.data.date)}</p>
                 {post.data.subtitle && <p class="subtitle">{post.data.subtitle}</p>}
+                <p class="date">{formatDate(post.data.date)}</p>
                 <p class="description">{post.data.description}</p>
               </div>
             </a>
