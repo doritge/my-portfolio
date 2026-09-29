@@ -48,7 +48,7 @@ movement.
 
 Now imagine placing particles at different positions in this space; on
 a regular grid, randomly, or in a particular configuration. A particle
-takes a small step in the direction definedits position in the field. At its new
+takes a small step in the direction defined by its position in the field. At its new
 position, the direction is re-evaluated and it takes another step.
 Repeating this process creates a trajectory through the field.
 
