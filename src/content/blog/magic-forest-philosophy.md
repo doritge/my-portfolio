@@ -3,6 +3,7 @@ title: "The Magic Forest"
 subtitle: "Philosophical Thoughts"
 description: Is mathematics created or discovered? A Platonistic view on the nature of generative art
 date: 2026-10
+cover: "main-image"
 ---
 
 Is mathematics created or discovered? Do we invent its objects and structures, or do they exist independently of us, waiting to be found? My work on *The Magic Forest* brought this question into my artistic practice.
