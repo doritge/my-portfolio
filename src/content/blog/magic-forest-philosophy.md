@@ -8,7 +8,7 @@ cover: "main-image"
 
 Is mathematics created or discovered? Do we invent its objects and structures, or do they exist independently of us, waiting to be found? My work on *The Magic Forest* brought this question into my artistic practice.
 
-In my [previous article](https://doritgenart.netlify.app/blog/magic-forest-tech/), I described the Magic Forest project and the mathematical processes behind its images. The unexpected results made me wonder what I had created and what, if anything, I had discovered. These questions led me to explore Plato’s philosophy and mathematical Platonism.
+In my [previous article](/blog/magic-forest-tech), I described the Magic Forest project and the mathematical processes behind its images. The unexpected results made me wonder what I had created and what, if anything, I had discovered. These questions led me to explore Plato’s philosophy and mathematical Platonism.
 
 I begin with Plato’s theory of Forms, his distinction between sensible and intelligible reality, and the place of mathematics within it. I then turn to modern mathematical Platonism and some of the mathematicians who have shaped it, before returning to the Magic Forest to consider how these ideas might illuminate my work.
 
@@ -36,7 +36,7 @@ The name points back to Plato: like his Forms, mathematical objects are taken to
 
 **Kurt Gödel** (1906–1978) was its most famous twentieth-century champion. He claimed we have a kind of perception of sets, since the axioms “force themselves upon us as being true,” and he believed that open questions such as the Continuum Hypothesis have definite answers.
 
-Philosophers have raised serious objections. The sharpest is **epistemological**, set out by Paul Benacerraf in “Mathematical Truth” (1973) and later sharpened by Hartry Field. If numbers exist outside space and time and cause nothing, how can we know anything about them? Our knowledge of tables and stars depends on causal contact, but abstract objects offer no such channel, so Platonism seems unable to explain how mathematical knowledge is possible.
+Philosophers have raised serious objections. The sharpest is **epistemological**, set out by **Paul Benacerraf** in *Mathematical Truth* (1973) and later sharpened by **Hartry Field**. If numbers exist outside space and time and cause nothing, how can we know anything about them? Our knowledge of tables and stars depends on causal contact, but abstract objects offer no such channel, so Platonism seems unable to explain how mathematical knowledge is possible.
 
 **W.V.O. Quine** (1908–2000) and **Hilary Putnam** (1926–2016) replied that we know mathematical objects the way we know electrons: indirectly, because they are indispensable to our best-confirmed scientific theories. Accepting physics while rejecting numbers is, in Putnam’s phrase, “intellectual dishonesty.” Other Platonists reject the **causal theory of knowledge** itself, arguing that mathematics is known *a priori*, through proof and reflection, and that Benacerraf’s challenge rests on a theory of knowledge built for physical objects.
 
