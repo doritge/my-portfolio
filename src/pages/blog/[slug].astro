@@ -26,7 +26,21 @@ function getThumbnail(slug: string, thumbnail?: string): string | null {
   return null;
 }
 
-const thumb = getThumbnail(post.id, post.data.thumbnail);
+// The article header image: a dedicated `cover` image living alongside the
+// article's inline images, falling back to the list thumbnail if not set.
+function getCoverImage(slug: string, cover?: string, thumbnail?: string): string | null {
+  if (cover) {
+    const dir = path.join(process.cwd(), 'public', 'images', 'blog', slug);
+    for (const ext of ['.png', '.jpg', '.jpeg', '.webp']) {
+      if (fs.existsSync(path.join(dir, `${cover}${ext}`))) {
+        return `/images/blog/${slug}/${cover}${ext}`;
+      }
+    }
+  }
+  return getThumbnail(slug, thumbnail);
+}
+
+const cover = getCoverImage(post.id, post.data.cover, post.data.thumbnail);
 ---
 
 <BaseLayout title={`${post.data.title} — Blog — emergence`}>
@@ -34,9 +48,9 @@ const thumb = getThumbnail(post.id, post.data.thumbnail);
     <a href="/blog" class="back">&larr; Blog</a>
     <h1>{post.data.title}</h1>
     {post.data.subtitle && <p class="subtitle">{post.data.subtitle}</p>}
-    {thumb && (
+    {cover && (
       <div class="thumb">
-        <img src={thumb} alt={post.data.title} />
+        <img src={cover} alt={post.data.title} />
       </div>
     )}
     <div class="content">
